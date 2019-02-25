@@ -107,14 +107,14 @@
        (map ffprobe)
        ; https://gist.github.com/msgodf/9365059
        ; TODO does merge make any values put on input channels 
-       ; available to take immediately on the merged channel?
+       ; available to take *immediately* on the merged channel?
        async/merge
        chan->seq))
 
 (defn encoder-df
   [ffprobe wsl?]
   (->> ffprobe
-       ; TODO how to specify nested col with huri?
+       ; TODO how to specify nested col directly with huri?
        (h/where {:ffprobe [#(= 0 (:exit %))]})
        (h/derive-cols {:location-str [#(url-decode (url/path->url % wsl?)) :file]
                        :encoder [#(-> % :out :streams first :tags :encoder) :ffprobe]})
@@ -146,7 +146,7 @@
                               (partial add-prefix "first-tempo-1-"))
            (cm/transform-keys (select-keys (-> % :first-tempo-2) [::cut/inizio ::cut/bpm])
                               (partial add-prefix "first-tempo-2-"))
-           (select-keys (:offset %) [:seconds-after-nearest-beat-1 :seconds-after-nearest-beat-2 :offset])
+           (:offset %)
            (select-keys % [:encoder]))
    offset-encoder))
 
@@ -157,12 +157,13 @@
                            :offset]}
                  offset-encoder))
 
-(defn encoder-offset-summary-df->flat-candlestick
+(defn encoder-offset-summary-df->flat
   [encoder-offset-summary]
   (map
    #(merge {}
            (select-keys % [:encoder])
-           (select-keys (-> % :rollup :offset-summary) [:min :q1 :q3 :max])
-           (select-keys (:rollup %) [:count]))
+           (select-keys (:rollup %) [:count])
+           (-> % :rollup :offset-summary)
+           )
    encoder-offset-summary))
 

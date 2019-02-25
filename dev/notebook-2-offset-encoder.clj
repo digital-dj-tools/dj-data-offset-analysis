@@ -50,8 +50,8 @@
 
 (def encoder-offset-summary (etl/encoder-offset-summary-df offset-encoder))
 
-(with-open [writer (io/writer "encoder-offset-summary-flat-candlestick.csv")]
+(with-open [writer (io/writer "encoder-offset-summary-flat.csv")]
   (->> encoder-offset-summary
-       etl/encoder-offset-summary-df->flat-candlestick
+       etl/encoder-offset-summary-df->flat
        etl/df->tuples
        (csv/write-csv writer)))
