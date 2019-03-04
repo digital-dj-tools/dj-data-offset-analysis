@@ -10,8 +10,7 @@
 (def sample-files (file/mp3-file-seq "/mnt/d/Music/Collections/Performance"))
 (count sample-files)
 
-(comment 
-  (edn/write-seq "sample-ffprobe-df.edn" (etl/ffprobe-df sample-files)))
+(edn/write-seq "sample-ffprobe-df.edn" (etl/ffprobe-df sample-files))
 
 ; check
 
