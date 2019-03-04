@@ -13,7 +13,7 @@
 (require '[offset.etl :as etl])
 (require '[offset.edn :as edn])
 
-(def ffprobe (edn/read-seq "sample-ffprobe-df.edn"))
+(def ffprobe (edn/read-seq "ffprobe.edn"))
 (count ffprobe)
 
 (def encoder (etl/encoder-df ffprobe true))
@@ -48,10 +48,10 @@
        etl/df->tuples
        (csv/write-csv writer)))
 
-(def encoder-offset-summary (etl/encoder-offset-summary-df offset-encoder))
+(def offset-encoder-summary (etl/offset-encoder-summary-df offset-encoder))
 
-(with-open [writer (io/writer "encoder-offset-summary-flat.csv")]
-  (->> encoder-offset-summary
-       etl/encoder-offset-summary-df->flat
+(with-open [writer (io/writer "offset-encoder-summary-flat.csv")]
+  (->> offset-encoder-summary
+       etl/offset-encoder-summary-df->flat
        etl/df->tuples
        (csv/write-csv writer)))

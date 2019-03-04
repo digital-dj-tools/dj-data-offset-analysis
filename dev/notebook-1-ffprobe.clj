@@ -7,12 +7,12 @@
 (require '[offset.edn :as edn])
 (require '[offset.file :as file])
 
-(def sample-files (file/mp3-file-seq "/mnt/d/Music/Collections/Performance"))
-(count sample-files)
+(def files (file/mp3-file-seq "/mnt/d/Music/Collections/Performance"))
+(count files)
 
-(edn/write-seq "sample-ffprobe-df.edn" (etl/ffprobe-df sample-files))
+(edn/write-seq "ffprobe.edn" (etl/ffprobe-df files))
 
 ; check
 
-(count (edn/read-seq "sample-ffprobe-df.edn"))
+(count (edn/read-seq "ffprobe.edn"))
 

@@ -150,20 +150,20 @@
            (select-keys % [:encoder]))
    offset-encoder))
 
-(defn encoder-offset-summary-df
+(defn offset-encoder-summary-df
   [offset-encoder]
   (h/rollup-fuse :encoder
                  {:rollup [#(transduce identity (r/fuse {:count ks/count :offset-summary ks/summary}) (map :offset %)) 
                            :offset]}
                  offset-encoder))
 
-(defn encoder-offset-summary-df->flat
-  [encoder-offset-summary]
+(defn offset-encoder-summary-df->flat
+  [offset-encoder-summary]
   (map
    #(merge {}
            (select-keys % [:encoder])
            (select-keys (:rollup %) [:count])
            (-> % :rollup :offset-summary)
            )
-   encoder-offset-summary))
+   offset-encoder-summary))
 

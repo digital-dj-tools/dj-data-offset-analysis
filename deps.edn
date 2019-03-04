@@ -3,7 +3,8 @@
  {org.clojure/clojure {:mvn/version "1.10.0"}
   org.clojure/data.csv {:mvn/version "0.1.4"}
   com.cemerick/url {:mvn/version "0.1.1" :exclusions [com.cemerick/clojurescript.test]}
-  digital-dj-tools/dj-data-converter {:local/root "../dj-data-converter"}
+  digital-dj-tools/dj-data-converter {:git/url "https://github.com/digital-dj-tools/dj-data-converter.git"
+                                      :sha "0e645720c0143e00b3684b4e857f0621aea93154"}
   huri {:mvn/version "0.10.0-SNAPSHOT"}
   kixi/stats {:mvn/version "0.5.0"}
   redux {:mvn/version "0.1.4"}}
