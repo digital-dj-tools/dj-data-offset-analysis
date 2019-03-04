@@ -14,3 +14,7 @@ node_modules
 /out/
 /cljs-test-runner-out/
 .nrepl-port
+*.edn
+*.csv
+*.xml
+*.nml
