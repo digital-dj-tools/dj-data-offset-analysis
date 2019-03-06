@@ -56,7 +56,7 @@
     (::cu/collection $)
     (add-col-empty-tempos-if-missing $)
     ; TODO why does huri not allow optional/sparse cols?
-    (remove-cols [::cu/artist ::cu/bpm ::cu/total-time ::cu/markers] $)
+    (remove-cols [::cu/artist ::cu/album ::cu/bpm ::cu/total-time ::cu/markers] $)
     (add-col-location-str $)
     (add-col-first-tempo $)
     (remove-cols [::cu/tempos] $)))
