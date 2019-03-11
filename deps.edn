@@ -5,6 +5,8 @@
   com.cemerick/url {:mvn/version "0.1.1" :exclusions [com.cemerick/clojurescript.test]}
   digital-dj-tools/dj-data-converter {:git/url "https://github.com/digital-dj-tools/dj-data-converter.git"
                                       :sha "c864308f0ab5bde1593f847c5dc128048a8abf86"}
+  digital-dj-tools/utils {:git/url "https://github.com/digital-dj-tools/utils.git"
+                          :sha "ff5cf33df6147c44832b94639d5a65d1ae4d14fc"}
   huri {:mvn/version "0.10.0-SNAPSHOT"}
   kixi/stats {:mvn/version "0.5.0"}
   redux {:mvn/version "0.1.4"}}

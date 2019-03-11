@@ -2,7 +2,6 @@
   (:require
    [cemerick.url :refer [url-decode]]
    [clojure.core.async :as async]
-   [converter.map :as cm]
    [converter.rekordbox.core :as cr]
    [converter.spec :as cs]
    [converter.traktor.core :as ct]
@@ -10,11 +9,13 @@
    [converter.universal.tempo :as cut]
    [huri.core :as h] ; TODO replace with clojure core?
    [kixi.stats.core :as ks]
-   [offset.exec :as exec]
-   [offset.json :as json]
    [offset.core :as o]
+   [offset.json :as json]
    [offset.url :as url]
-   [redux.core :as r]))
+   [redux.core :as r]
+   [utils.exec :as ue]
+   [utils.keyword :as uk]
+   [utils.map :as um]))
 
 (defn rename-col
   [old new df]
@@ -90,7 +91,7 @@
 (defn ffprobe
   [file]
   (async/go
-    (let [result (async/<! (exec/exec "ffprobe" "-print_format" "json" "-show_streams" file))]
+    (let [result (async/<! (ue/exec "ffprobe" "-print_format" "json" "-show_streams" file))]
       {:file file
        :ffprobe {:out (json/json->edn (apply str (:out result)))
                  :exit (:exit result)}})))
@@ -131,21 +132,14 @@
        (h/join :inner-join :location-str encoder)
        (h/select-cols [:first-tempo-1 :first-tempo-2 :offset :encoder])))
 
-(defn add-prefix
-  [prefix k]
-  (->> k
-      name
-      (str prefix)
-      keyword))
-
 (defn offset-encoder-df->flat
   [offset-encoder]
   (map
    #(merge {}
-           (cm/transform-keys (select-keys (-> % :first-tempo-1) [::cut/inizio ::cut/bpm])
-                              (partial add-prefix "first-tempo-1-"))
-           (cm/transform-keys (select-keys (-> % :first-tempo-2) [::cut/inizio ::cut/bpm])
-                              (partial add-prefix "first-tempo-2-"))
+           (um/transform-keys (select-keys (-> % :first-tempo-1) [::cut/inizio ::cut/bpm])
+                              (partial uk/add-prefix "first-tempo-1-"))
+           (um/transform-keys (select-keys (-> % :first-tempo-2) [::cut/inizio ::cut/bpm])
+                              (partial uk/add-prefix "first-tempo-2-"))
            (:offset %)
            (select-keys % [:encoder]))
    offset-encoder))
