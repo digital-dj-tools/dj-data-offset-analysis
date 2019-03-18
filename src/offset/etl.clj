@@ -10,10 +10,10 @@
    [huri.core :as h] ; TODO replace with clojure core?
    [kixi.stats.core :as ks]
    [offset.core :as o]
-   [offset.json :as json]
    [offset.url :as url]
    [redux.core :as r]
    [utils.exec :as ue]
+   [utils.json :as uj]
    [utils.keyword :as uk]
    [utils.map :as um]))
 
@@ -93,7 +93,7 @@
   (async/go
     (let [result (async/<! (ue/exec "ffprobe" "-print_format" "json" "-show_streams" file))]
       {:file file
-       :ffprobe {:out (json/json->edn (apply str (:out result)))
+       :ffprobe {:out (uj/parse-str (apply str (:out result)))
                  :exit (:exit result)}})))
 
 (defn chan->seq

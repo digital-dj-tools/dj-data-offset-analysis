@@ -13,7 +13,9 @@
 (require '[offset.etl :as etl])
 (require '[offset.edn :as edn])
 
-(def ffprobe (edn/read-seq "ffprobe.edn"))
+(require '[utils.json :as json])
+
+(def ffprobe (json/parse-str (slurp "ffprobe.json")))
 (count ffprobe)
 
 (def encoder (etl/encoder-df ffprobe true))
